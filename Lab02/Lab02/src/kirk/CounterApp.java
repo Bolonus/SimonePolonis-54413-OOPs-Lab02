@@ -1,0 +1,75 @@
+package kirk;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+
+public class CounterApp implements ActionListener {
+
+	int count = 0;
+
+	@Override
+    public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==button) {
+			Counter counter = (Counter) counters.getSelectedItem();
+	        counter.increase();
+	        label.setText(Integer.toString(counter.currentValue()));
+	        frame.pack();
+		}
+		else if(e.getSource()==buttonR) {
+			Counter counter = (Counter) counters.getSelectedItem();
+	        counter.reset();
+	        label.setText(Integer.toString(counter.currentValue()));
+	        frame.pack();
+		}
+        
+    }
+    
+    JFrame frame = new JFrame("Licznik");
+    JButton button = new JButton("Kliknij!");
+    JButton buttonR = new JButton("Zresetuj");
+    JLabel label = new JLabel("0");
+
+    JComboBox<Counter> counters = new JComboBox<>(new Counter[]{
+    	new SimpleCounter(),
+    	new DoubleCounter(),
+    	new OverflowCounter(),
+    });
+    
+    public static void main(String[] args) {
+        new CounterApp().run();
+    }
+
+    void run() {
+        frame.setLayout(new FlowLayout());
+        frame.add(button);
+        frame.add(buttonR);
+        frame.add(label);
+        frame.add(counters);	
+        
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Counter counter = (Counter) counters.getSelectedItem();
+            	counter.increase();
+	        	label.setText(Integer.toString(counter.currentValue()));
+	        	frame.pack();
+            }
+        });
+        
+        buttonR.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	Counter counter = (Counter) counters.getSelectedItem();
+    	        counter.reset();
+    	        label.setText(Integer.toString(counter.currentValue()));
+    	        frame.pack();
+            }
+        });
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+}
